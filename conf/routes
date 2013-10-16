@@ -2,10 +2,17 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Import CRUD routes
+*      /admin              module:crud
+
 # Home page
+GET     /posts/{<[0-9]+>id}             Application.show
+GET     /posts/{tag}                    Application.listTagged 
+
+# GET     /posts/{id}                             Application.show
+# GET     /posts/{tag}                    Application.listTagged
 POST    /posts/{postId}/comments                Application.postComment
 GET     /captcha                                Application.captcha
-GET     /posts/{id}                             Application.show
 GET     /                                       Application.index
 
 # Ignore favicon requests
