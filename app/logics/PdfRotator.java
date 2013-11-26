@@ -3,6 +3,7 @@ package logics;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 import models.PageConfig;
@@ -19,7 +20,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import constants.Constant;
 
-public class OnePdfRotator {
+public class PdfRotator {
 
 	private Rectangle getRectangle(double height, double width) {
 		float fheight = (float) height;
@@ -28,11 +29,22 @@ public class OnePdfRotator {
 		return rectangle;
 	}
 
-	public void rotatePdf(String targetPdf, String sourcePdf, Map<Integer, PageConfig> pageConfigs) {
+	public int rotatePdf(String targetPdf, String sourcePdf, Map<Integer, PageConfig> pageConfigs, int multiply) {
 		System.out.println("start rotatePdf");
 		
-		double height = Double.valueOf(Play.configuration.getProperty("rotate.height"));
-		double width = Double.valueOf(Play.configuration.getProperty("rotate.width"));
+		Collection<PageConfig> collection = pageConfigs.values();
+		PageConfig oneConfig = (PageConfig) (collection.toArray()[0]); 
+		
+//		double height = Double.valueOf(Play.configuration.getProperty("rotate.height"));
+//		double width = Double.valueOf(Play.configuration.getProperty("rotate.width"));
+		
+		double height = Double.valueOf(oneConfig.height);
+		double width = Double.valueOf(oneConfig.width);
+		
+//		if (multiply != 0) {
+//			height = height * multiply;
+//			width = width * multiply;
+//		}
 		Document document = new Document(getRectangle(height, width));
 		PdfWriter writer = null;
 		try {
@@ -72,5 +84,6 @@ public class OnePdfRotator {
 		}
 		document.close();
 		System.out.println("end rotatePdf");
+		return numberOfPages;
 	}
 }

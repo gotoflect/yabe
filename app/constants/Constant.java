@@ -22,6 +22,8 @@ public class Constant {
 	public static final String UPLOAD_BUTTON = "upload";
 	public static final String REGULATE_BUTTON = "regulate";
 	public static final String OUTPUT_BUTTON = "output";
+	public static final String SET_CONFIGS_BUTTON = "setconfigs";
+	public static final String RESTORE_CONFIGS_BUTTON = "restoreconfigs";
 	
 	public static final String NUMBER_OF_PAGES_KEY = "numberofpageskey";
 }

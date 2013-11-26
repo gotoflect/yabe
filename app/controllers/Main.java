@@ -2,15 +2,6 @@ package controllers;
 
 import java.io.File;
 import java.io.FileInputStream;
-<<<<<<< HEAD
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.util.HashMap;
-import java.util.Map;
-
-import logics.OnePdfRotator;
-=======
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +15,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import logics.PdfRotator;
->>>>>>> dev
 import models.PageConfig;
 import play.Logger;
 import play.Play;
@@ -39,21 +29,23 @@ public class Main extends Controller {
 	}
 	
 	public static void manipulate(int height, int width, int pagenum, long horizontal, long longitudinal, double angle, File pdf, String clickbutton) {
+		setSessions(height, width, pagenum, horizontal, longitudinal, angle);
 		if (Constant.UPLOAD_BUTTON.equals(clickbutton)) {
-			setSessions(height, width, pagenum, horizontal, longitudinal, angle);
 			String srcFilePath = Play.configuration.getProperty("rotate.inputdir") + Play.configuration.getProperty("rotate.inputFileName");
 			makeFile(pdf, srcFilePath);
 			index(null);
 		} else if (Constant.REGULATE_BUTTON.equals(clickbutton)) {
-			setSessions(height, width, pagenum, horizontal, longitudinal, angle);
 			Object obj = Cache.get(Constant.PDF_KEY);
 			pdf = (File) obj;
 			String path = "public/output/" + Constant.OUTPUT_FILE_NAME;
 			regulate(height, width, pagenum, horizontal, longitudinal, angle);
 			index(path);
 		} else if (Constant.OUTPUT_BUTTON.equals(clickbutton)) {
-			setSessions(height, width, pagenum, horizontal, longitudinal, angle);
 			outputPdf();
+		} else if (Constant.SET_CONFIGS_BUTTON.equals(clickbutton)) {
+			setConfigs();
+		} else if (Constant.RESTORE_CONFIGS_BUTTON.equals(clickbutton)) {
+			restoreConfigs();
 		} else {
 			Logger.debug("button is not clicked. clickbutton=" + clickbutton);
 			error();
@@ -105,7 +97,7 @@ public class Main extends Controller {
 		rotater.rotatePdf(Constant.OUTPUT_FILE_NAME, Constant.INPUT_FILE_NAME, map, 0);
 	}
 	
-	private static void outputConfigs() {
+	private static void setConfigs() {
 		int number = Integer.valueOf(session.get(Constant.NUMBER_OF_PAGES_KEY));
 		boolean isFirstPage = true;
 		OutputStream os = null;
@@ -137,7 +129,7 @@ public class Main extends Controller {
 		}
 	}
 	
-	private static Map<Integer, PageConfig> restoreConfigs() {
+	private static void restoreConfigs() {
         Properties prop = new Properties();
         InputStream is;
 		try {
@@ -153,31 +145,17 @@ public class Main extends Controller {
 
 		Map<Integer, PageConfig> map = new HashMap<Integer, PageConfig>();
         for (Entry<Object, Object> entry : prop.entrySet()) {
-        	PageConfig config = new PageConfig();
-            System.out.println(entry.getKey() + " = " + entry.getValue());
             String key = (String) entry.getKey();
             String value = (String) entry.getValue();
-            if (key.contains("tx")) {
-            	String[] keys = key.split("tx");
-            	String pagenumStr = keys[1];
-            	PageConfig assentConfig = map.get(Integer.valueOf(pagenumStr));
-            	if (assentConfig != null) {
-            		
-            	}
-            } else if (key.contains("tx")) {
-            	
-            } else if (key.contains("ty")) {
-            	
-            } else if (key.contains("angle")) {
-            } else if (key.contains("height")) {
-            } else if (key.contains("width")) {
-            }
+            setMap(map, key, value);
         }
-        return null;
+        for (PageConfig config : map.values()) {
+        	Cache.set(Constant.PAGE_CONFIG_KEY + String.valueOf(config.pagenum), config);
+        }
 	}
 	
 	private static void setMap(Map<Integer, PageConfig> configMap, String key, String value) {
-		boolean hasConfig = false;
+		//boolean hasConfig = false;
 		if (key.contains("tx")) {
         	String[] keys = key.split("tx");
         	String pagenumStr = keys[1];
@@ -187,8 +165,8 @@ public class Main extends Controller {
         	} else {
         		PageConfig newConfig = new PageConfig();
         		newConfig.tx = Double.parseDouble(value);
-        		// TODO pagenumê›íË
-        		// configMap.put(key, value);
+        		newConfig.pagenum = Integer.valueOf(pagenumStr);
+        		configMap.put(Integer.valueOf(pagenumStr), newConfig);
         	}
         } else if (key.contains("ty")) {
         	String[] keys = key.split("ty");
@@ -199,6 +177,8 @@ public class Main extends Controller {
         	} else {
         		PageConfig newConfig = new PageConfig();
         		newConfig.ty = Double.parseDouble(value);
+        		newConfig.pagenum = Integer.valueOf(pagenumStr);
+        		configMap.put(Integer.valueOf(pagenumStr), newConfig);
         	}
         } else if (key.contains("angle")) {
         	String[] keys = key.split("angle");
@@ -209,6 +189,8 @@ public class Main extends Controller {
         	} else {
         		PageConfig newConfig = new PageConfig();
         		newConfig.angle = Double.parseDouble(value);
+        		newConfig.pagenum = Integer.valueOf(pagenumStr);
+        		configMap.put(Integer.valueOf(pagenumStr), newConfig);
         	}
         } else if (key.contains("height")) {
         	String[] keys = key.split("height");
@@ -219,6 +201,8 @@ public class Main extends Controller {
         	} else {
         		PageConfig newConfig = new PageConfig();
         		newConfig.height = Double.parseDouble(value);
+        		newConfig.pagenum = Integer.valueOf(pagenumStr);
+        		configMap.put(Integer.valueOf(pagenumStr), newConfig);
         	}
         } else if (key.contains("width")) {
         	String[] keys = key.split("width");
@@ -229,6 +213,8 @@ public class Main extends Controller {
         	} else {
         		PageConfig newConfig = new PageConfig();
         		newConfig.width = Double.parseDouble(value);
+        		newConfig.pagenum = Integer.valueOf(pagenumStr);
+        		configMap.put(Integer.valueOf(pagenumStr), newConfig);
         	}
         }
 	}
