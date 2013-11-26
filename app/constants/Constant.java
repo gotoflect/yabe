@@ -13,9 +13,15 @@ public class Constant {
 	public static final String PDF_KEY = "pdfkey";
 	public static final String HEIGHT_KEY = "heightkey";
 	public static final String WIDTH_KEY = "widthkey";
+	public static final String PAGE_CONFIG_KEY = "pageconfigkey";
 	
+	public static final String INPUT_FILE_NAME = "inputfile.pdf";
 	public static final String OUTPUT_FILE_NAME = "outputfile.pdf";
+	public static final String CONFIG_FILE_NAME = "";
 	
 	public static final String UPLOAD_BUTTON = "upload";
 	public static final String REGULATE_BUTTON = "regulate";
+	public static final String OUTPUT_BUTTON = "output";
+	
+	public static final String NUMBER_OF_PAGES_KEY = "numberofpageskey";
 }

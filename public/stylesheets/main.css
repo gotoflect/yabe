@@ -1,17 +1,17 @@
 html, body {
     font-family: Helvetica, Arial, Sans !important;
-    height: 1000px;
+    height: 1500px;
 }
 
 body {
-    height: 1000px;
+    height: 1500px;
     padding: 0 30px;
     margin: auto;
 }
 
 .commons-inputs {  margin-left: auto; margin-right: auto; padding-left: auto; padding-right: auto; }
 .inputs {  margin-left: auto; margin-right: auto; padding-left: auto; padding-right: auto; }
-.block { height: 1000px; margin-top: 30px; margin-left: auto; margin-right: auto; }
+.block { height: 1500px; margin-top: 30px; margin-left: auto; margin-right: auto; }
 
 .item	{ background-color: #0090C7; padding-left: 10px; padding-right: 10px; }
 .value	{ width: 80%; }
