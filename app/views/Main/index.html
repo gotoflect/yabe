@@ -31,27 +31,20 @@ $(function () {
 	<tr><td class="item">X</td><td class="value"><input type="text" name="horizontal" value="${session.get('horizontalkey')}" /></td></tr>
 	<tr><td class="item">Y</td><td class="value"><input type="text" name="longitudinal"  value="${session.get('longitudinalkey')}" /></td></tr>
 	<tr><td class="item">A</td><td class="value"><input type="text" name="angle" value="${session.get('anglekey')}" /></td></tr>
-	<tr>
-		<td>
-			<input id="regulatebutton" type="submit" value="Regulate" />
-			<input id="outputbutton" type="submit" value="Output" />
-		</td>
-		<td>
-			<input id="setconfigs" type="submit" value="Set Config" />
-			<input id="restoreconfigs" type="submit" value="Restore Config" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-		    <input type="file" id="pdf" name="pdf" />
-		</td>
-		<td>
-			<input id="uploadbutton" type="submit" value="Upload" />
-		</td>
-	</tr>
-	<input id="clickbutton" type="hidden" name="clickbutton" />
-</div>
 </table>
+<div class="button-line">
+	<input id="regulatebutton" type="submit" value="Regulate" />
+	<input id="outputbutton" type="submit" value="Output" />
+</div>
+<div class="button-line">
+	<input id="setconfigs" type="submit" value="Set Config" />
+	<input id="restoreconfigs" type="submit" value="Restore Config" />
+</div>
+<div class="button-line">
+	<input type="file" id="pdf" name="pdf" />
+	<input id="uploadbutton" type="submit" value="Upload" />
+</div>
+<input id="clickbutton" type="hidden" name="clickbutton" />
 #{/form}
 <embed class="regulate-window" src="${path}">
 </div>

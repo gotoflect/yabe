@@ -73,7 +73,7 @@ public class PdfRotator {
 
 			PdfContentByte canvas = writer.getDirectContent();
 			
-			double angle = config.angle;
+			double angle = config.pdfAngle;
 			double tx = config.tx;
 			double ty = config.ty;
 		    AffineTransform transform = AffineTransform.getRotateInstance(angle, importedPage.getWidth() / dx, importedPage.getHeight() / dy);

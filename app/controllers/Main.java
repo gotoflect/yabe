@@ -30,6 +30,7 @@ public class Main extends Controller {
 	
 	public static void manipulate(int height, int width, int pagenum, long horizontal, long longitudinal, double angle, File pdf, String clickbutton) {
 		setSessions(height, width, pagenum, horizontal, longitudinal, angle);
+		String path = Play.configuration.getProperty("rotate.publicdir") + Play.configuration.getProperty("rotate.outputFileName");
 		if (Constant.UPLOAD_BUTTON.equals(clickbutton)) {
 			String srcFilePath = Play.configuration.getProperty("rotate.inputdir") + Play.configuration.getProperty("rotate.inputFileName");
 			makeFile(pdf, srcFilePath);
@@ -37,15 +38,17 @@ public class Main extends Controller {
 		} else if (Constant.REGULATE_BUTTON.equals(clickbutton)) {
 			Object obj = Cache.get(Constant.PDF_KEY);
 			pdf = (File) obj;
-			String path = "public/output/" + Constant.OUTPUT_FILE_NAME;
 			regulate(height, width, pagenum, horizontal, longitudinal, angle);
 			index(path);
 		} else if (Constant.OUTPUT_BUTTON.equals(clickbutton)) {
 			outputPdf();
+			index(path);
 		} else if (Constant.SET_CONFIGS_BUTTON.equals(clickbutton)) {
 			setConfigs();
+			index(null);
 		} else if (Constant.RESTORE_CONFIGS_BUTTON.equals(clickbutton)) {
 			restoreConfigs();
+			index(null);
 		} else {
 			Logger.debug("button is not clicked. clickbutton=" + clickbutton);
 			error();
@@ -78,7 +81,7 @@ public class Main extends Controller {
 		PdfRotator rotater = new PdfRotator();
 		Map<Integer, PageConfig> map = new HashMap<Integer, PageConfig>();
 		map.put(pageConfig.pagenum, pageConfig);
-		int number = rotater.rotatePdf(Constant.OUTPUT_FILE_NAME, Constant.INPUT_FILE_NAME, map, 0);
+		int number = rotater.rotatePdf(Play.configuration.getProperty("rotate.outputFileName"), Play.configuration.getProperty("rotate.inputFileName"), map, 0);
 		session.put(Constant.NUMBER_OF_PAGES_KEY, number);
 		Cache.set(Constant.PAGE_CONFIG_KEY + String.valueOf(pagenum), pageConfig);
 	}
@@ -94,12 +97,11 @@ public class Main extends Controller {
 				map.put(pageConfig.pagenum, pageConfig);
 			}
 		}
-		rotater.rotatePdf(Constant.OUTPUT_FILE_NAME, Constant.INPUT_FILE_NAME, map, 0);
+		rotater.rotatePdf(Play.configuration.getProperty("rotate.outputFileName"), Play.configuration.getProperty("rotate.inputFileName"), map, 0);
 	}
 	
 	private static void setConfigs() {
 		int number = Integer.valueOf(session.get(Constant.NUMBER_OF_PAGES_KEY));
-		boolean isFirstPage = true;
 		OutputStream os = null;
 		try {
 			os = new FileOutputStream(Play.configuration.getProperty("rotate.configFilePath"));
@@ -118,10 +120,6 @@ public class Main extends Controller {
 		        prop.setProperty("width" + pagenum, String.valueOf(pageConfig.width));
 				try {
 					prop.storeToXML(os, String.valueOf(pageConfig.pagenum));
-					if (isFirstPage) {
-						Properties commonProp = new Properties();
-						commonProp.storeToXML(os, "common");
-					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}	
