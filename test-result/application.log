@@ -1,7 +1,0 @@
-16 10 2013 20:24:47,813 INFO  ~ Starting C:\workspace\yabe
-16 10 2013 20:24:47,816 WARN  ~ Declaring modules in application.conf is deprecated. Use dependencies.yml instead (module.secure)
-16 10 2013 20:24:47,816 INFO  ~ Module secure is available (C:\play\modules\secure)
-16 10 2013 20:24:47,816 WARN  ~ Declaring modules in application.conf is deprecated. Use dependencies.yml instead (module.cobertura)
-16 10 2013 20:24:47,817 INFO  ~ Module cobertura is available (C:\play\modules\cobertura-2.5)
-16 10 2013 20:24:47,817 INFO  ~ Module cobertura is available (C:\play\modules\cobertura-2.5)
-16 10 2013 20:24:47,818 INFO  ~ Module crud is available (C:\play\modules\crud)
